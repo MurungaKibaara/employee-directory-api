@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const authRoutes = require("./routes/auth");
 const employeesRoutes = require("./routes/employees");
@@ -9,11 +10,19 @@ require('dotenv').config()
 
 const app = express();
 
-mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true  });
+const env = process.env.NODE_ENV || 'development';
+
+if(env === 'test'){
+    mongoose.connect(process.env.TEST_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true  });
+} else {
+    mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true  });
+}
+
 mongoose.Promise = global.Promise;
 
 app.use(express.static('public'));
 app.use(express.json());
+app.use(cors());
 
 // Routes
 app.use('/api', authRoutes);
