@@ -49,16 +49,20 @@ router.post('/employees', async (req, res, next) => {
       }
 });
 
-router.put('/employees/:id', (req, res, next) => {
+router.put('/employees/:id', async (req, res, next) => {
 
-    var filter = {_id: req.params.id}
-    let update = req.body
+    const selectedOption = Object.keys(req.body);
+    const employee = await Employee.findById({ _id: req.params.id });
 
-    Employee.findOneAndUpdate(filter, update, { new: true, upsert: true })
-        .then(function(Employee){Employee.findOne({_id: req.params.id})
-        .then(function(employee){res.status(200).send(employee);})
-        .catch((err) => console.log({ err }))
-    });
+    try {
+        selectedOption.forEach(option => employee[option] = req.body[option]);
+        
+        await employee.save()
+        res.status(200).json(employee);
+
+    } catch (err) {
+        res.status(400).json({ error: err }); 
+    }
 });
 
 router.delete('/employees/:id', (req, res) => {

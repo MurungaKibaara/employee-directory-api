@@ -141,25 +141,25 @@ describe("Employees", () => {
           })
     })
 
-    // it("Should edit an employee with a token", (done) => {
-    //     request('http://localhost:4000')
-    //     .put(`/api/employees/${id}`)
-    //     .set({ Authorization: `Bearer ${token}` })
-    //     .send({
-    //         "firstname": "Murunga",
-    //         "lastname": "Kibaara",
-    //         "email": "murungakibaara@gmail.com",
-    //         "department": "engineering",
-    //         "title": "VP",
-    //         "salary": 70000,
-    //         "status": "active"
-    //     })
-    //     .end((err, res) => {
-    //         expect(res.status).to.eq(200);
-    //         if (err) { done(err) }
-    //         else { done() }
-    //       })
-    // })
+    it("Should edit an employee with a token", (done) => {
+        request('http://localhost:4000')
+        .put(`/api/employees/${id}`)
+        .set({ Authorization: `Bearer ${token}` })
+        .send({
+            "firstname": "Murunga",
+            "lastname": "Kibaara",
+            "email": "murungakibaara@gmail.com",
+            "department": "engineering",
+            "title": "VP",
+            "salary": 70000,
+            "status": "active"
+        })
+        .end((err, res) => {
+            expect(res.status).to.eq(200);
+            if (err) { done(err) }
+            else { done() }
+          })
+    })
 
     it("Should not delete an employee with a token", (done) => {
         request('http://localhost:4000')
