@@ -20,8 +20,8 @@ router.get('/employees', async (req, res, next) => {
 
 router.get('/employees/:id', (req, res, next) => {
     Employee.find({_id: req.params.id}).then(function(employees){
-        res.send(employees);
-    }).catch(next);
+        res.status(200).send(employees);
+    });
 });
 
 router.post('/employees', async (req, res, next) => {
@@ -44,8 +44,7 @@ router.post('/employees', async (req, res, next) => {
         const savedEmployee = await employee.save();
         res.status(201).json({ error: null, data: savedEmployee  });
       } catch (error) {
-        console.log({ error })
-        res.status(400).json({ error });
+        res.status(400).json({ error: error });
       }
 });
 

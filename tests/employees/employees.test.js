@@ -67,6 +67,7 @@ describe("Employees", () => {
         })
         .end((err, res) => {
             expect(res.status).to.eq(400);
+            expect(res.body).to.have.property("error")
             if (err) { done(err) }
             else { done() }
           })
@@ -116,6 +117,8 @@ describe("Employees", () => {
         .send({})
         .end((err, res) => {
             expect(res.status).to.eq(400);
+            expect(res.body).to.have.property("error")
+
             if (err) { done(err) }
             else { done() }
           })
@@ -136,6 +139,8 @@ describe("Employees", () => {
         })
         .end((err, res) => {
             expect(res.status).to.eq(400);
+            expect(res.body).to.have.property("error")
+
             if (err) { done(err) }
             else { done() }
           })
@@ -161,6 +166,32 @@ describe("Employees", () => {
           })
     })
 
+
+
+    it("Should not fetch an employee with a token", (done) => {
+        request('http://localhost:4000')
+        .delete(`/api/employees/${id}`)
+        .send({})
+        .end((err, res) => {
+            expect(res.status).to.eq(400)
+            expect(res.body).to.have.property("error")
+            if (err) { done(err) }
+            else { done() }
+          })
+    })
+
+    it("Should fetch an employee with a token", (done) => {
+        request('http://localhost:4000')
+        .delete(`/api/employees/${id}`)
+        .set({ Authorization: `Bearer ${token}` })
+        .send({})
+        .end((err, res) => {
+            expect(res.status).to.eq(200)
+            if (err) { done(err) }
+            else { done() }
+          })
+    })
+
     it("Should not delete an employee with a token", (done) => {
         request('http://localhost:4000')
         .delete(`/api/employees/${id}`)
@@ -174,7 +205,8 @@ describe("Employees", () => {
             "status": "active"
         })
         .end((err, res) => {
-            expect(res.status).to.eq(400);
+            expect(res.status).to.eq(400)
+            expect(res.body).to.have.property("error")
             if (err) { done(err) }
             else { done() }
           })
