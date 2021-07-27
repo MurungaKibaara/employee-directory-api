@@ -27,7 +27,7 @@ router.post("/auth/signup", async (req, res) => {
       const savedUser = await user.save();
       const accessToken = jwt.sign({userID: savedUser._id, role: savedUser.role}, JWT_SECRET, {expiresIn: '1800s'});
 
-      res.json({ error: null, data: { accessToken } });
+      res.status(201).json({ error: null, data: { accessToken } });
     } catch (error) {
       res.status(400).json({ error });
     }

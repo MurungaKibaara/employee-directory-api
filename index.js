@@ -12,7 +12,7 @@ const app = express();
 
 const env = process.env.NODE_ENV || 'development';
 
-if(env === 'test'){
+if(env === 'testing'){
     mongoose.connect(process.env.TEST_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true  });
 } else {
     mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true  });
@@ -36,8 +36,11 @@ app.use('/api', authRoutes);
 app.use('/api', verifyToken, employeesRoutes);
 
 // listen for requests
-PORT = process.env.PORT || 4000
+port = process.env.PORT || 4000
 
-app.listen(PORT, function(){
-    console.log('Ready to Go!');
+const listen = app.listen(port, function(){
+    console.log(`Started :::::: ${env} server listening on port ${port}`);
 });
+
+module.exports= app;
+module.exports.port=listen.address().port;
