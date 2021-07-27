@@ -13,9 +13,9 @@ const app = express();
 const env = process.env.NODE_ENV || 'development';
 
 if(env === 'testing'){
-    mongoose.connect(process.env.TEST_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true  });
+    mongoose.connect(process.env.TEST_DB_URL, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false  });
 } else {
-    mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true  });
+    mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false  });
 }
 
 mongoose.Promise = global.Promise;

@@ -42,24 +42,28 @@ router.post('/employees', async (req, res, next) => {
     
       try {
         const savedEmployee = await employee.save();
-        res.json({ error: null, data: savedEmployee  });
+        res.status(201).json({ error: null, data: savedEmployee  });
       } catch (error) {
         console.log({ error })
         res.status(400).json({ error });
       }
 });
 
-router.put('/employees/:id', (req, res) => {
-    Employee.findOneAndUpdate({_id: req.params.id},{$set: req.body}, {new: true}).then(function(Employee){
-        Employee.findOne({_id: req.params.id}).then(function(employee){
-            res.send(employee);
-        });
+router.put('/employees/:id', (req, res, next) => {
+
+    var filter = {_id: req.params.id}
+    let update = req.body
+
+    Employee.findOneAndUpdate(filter, update, { new: true, upsert: true })
+        .then(function(Employee){Employee.findOne({_id: req.params.id})
+        .then(function(employee){res.status(200).send(employee);})
+        .catch((err) => console.log({ err }))
     });
 });
 
 router.delete('/employees/:id', (req, res) => {
     if (req.role === 'user') {
-        res.send({ error: "You don't have the required privileges." })
+        res.status(400).send({ error: "You don't have the required privileges." })
         return false
     }
     Employee.findOneAndDelete({_id: req.params.id}).then(function(employee){

@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "devStart": "nodemon index.js",
-    "test": "export NODE_ENV=testing && nodemon --exec 'nyc mocha tests/*/**.test.js'"
+    "test": "export NODE_ENV=testing && nodemon --exec 'nyc mocha tests/*/**.test.js --timeout 10000'"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
